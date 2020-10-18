@@ -26,7 +26,9 @@ export default function App() {
   }
 
   const PostData = () => {
+    // post data here
     console.log(refContainer.current.getValue())
+    toggleModal()
   }
 
   useEffect(()=> {
@@ -47,6 +49,7 @@ export default function App() {
                 <Form ref={refContainer} type={Profile}/>
                 <View>
                   <Button title="Submit" onPress={PostData} />
+                  <Button title="Close" onPress={toggleModal} />
                 </View>
               </View>
             </Modal>
