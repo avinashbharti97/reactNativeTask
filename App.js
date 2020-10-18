@@ -1,18 +1,34 @@
 //import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Platform, StatusBar } from 'react-native';
 import { TextInput, SafeAreaView, StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import { Card} from 'react-native-elements';
 import Modal from 'react-native-modal';
+import t from 'tcomb-form-native'
 import InputForm from './components/inputForm'
 
-export default function App() {
+const Form = t.form.Form
 
+const Profile = t.struct({
+    name: t.String,
+    gender: t.String,
+    age: t.Number,
+    comments: t.String,
+    hobbies: t.String
+})
+
+export default function App() {
+  const refContainer = useRef(null)
   const [state, setState] = useState([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   }
+
+  const PostData = () => {
+    console.log(refContainer.current.getValue())
+  }
+
   useEffect(()=> {
     fetch("https://5f8beb00c7aadb001605dea0.mockapi.io/Profiles")
       .then(response => response.json())
@@ -28,9 +44,9 @@ export default function App() {
             <Modal
               isVisible={isModalVisible}>
               <View>
-                <InputForm />
+                <Form ref={refContainer} type={Profile}/>
                 <View>
-                  <Button title="Submit" onPress={toggleModal} />
+                  <Button title="Submit" onPress={PostData} />
                 </View>
               </View>
             </Modal>
